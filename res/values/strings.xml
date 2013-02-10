@@ -7,6 +7,8 @@
     <string name="menu_settings">Settings</string>
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Send</string>
+    <string name="unknown">Unknown</string>
+    <string name="not_support_gps">GPS Provider not Supported</string>
     <string name="title_activity_display_message">My Message</string>
 
 </resources>

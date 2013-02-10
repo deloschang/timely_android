@@ -32,7 +32,9 @@ public final class R {
         public static final int edit_message=0x7f040003;
         public static final int hello_world=0x7f040001;
         public static final int menu_settings=0x7f040002;
-        public static final int title_activity_display_message=0x7f040005;
+        public static final int not_support_gps=0x7f040006;
+        public static final int title_activity_display_message=0x7f040007;
+        public static final int unknown=0x7f040005;
     }
     public static final class style {
         /** 
