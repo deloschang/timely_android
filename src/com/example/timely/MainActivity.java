@@ -1,5 +1,6 @@
 package com.example.timely;
 
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
@@ -38,6 +39,7 @@ public class MainActivity extends Activity {
 		
 	}
 	
+	
 	@Override
 	protected void onStart(){
 		super.onStart();
@@ -55,6 +57,12 @@ public class MainActivity extends Activity {
 		}
 
 	}
+	
+	@Override
+	protected void onStop(){
+		super.onStop();
+		mLocationManager.removeUpdates(listener);
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -64,13 +72,17 @@ public class MainActivity extends Activity {
 	}
 	
 	// Called when user clicks button
-	public void sendMessage(View view){
-		Intent intent = new Intent(this, DisplayMessageActivity.class);
-		EditText editText = (EditText) findViewById(R.id.edit_message);
-		String message = editText.getText().toString();
-		intent.putExtra(EXTRA_MESSAGE, message);
-		
-		startActivity(intent);
+//	public void sendMessage(View view){
+//		Intent intent = new Intent(this, DisplayMessageActivity.class);
+//		EditText editText = (EditText) findViewById(R.id.edit_message);
+//		String message = editText.getText().toString();
+//		intent.putExtra(EXTRA_MESSAGE, message);
+//		
+//		startActivity(intent);
+//		
+//	}
+	
+	private final LocationListener listener = new LocationListener(){
 		
 	}
 
