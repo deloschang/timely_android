@@ -10,6 +10,8 @@ import android.os.Message;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Menu;
 
 
@@ -20,7 +22,7 @@ import android.widget.Toast;
 
 import android.widget.TextView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 	public final static String EXTRA_MESSAGE = "com.example.timely.MESSAGE";
 	
 	private TextView mLatLng;
@@ -41,7 +43,11 @@ public class MainActivity extends Activity {
     private static final int TEN_SECONDS = 10000;
     private static final int TEN_METERS = 10;
     private static final int TWO_MINUTES = 1000 * 60 * 2;
+    
+    // debugging purposes
+    private static final String TAG = "MyApp";  
 
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,18 +58,20 @@ public class MainActivity extends Activity {
 			mUseFine = savedInstanceState.getBoolean(KEY_FINE);
 			mUseBoth = savedInstanceState.getBoolean(KEY_BOTH);
 		} else {
-			mUseFine = false;
+			mUseFine = true;
 			mUseBoth = false;
 		}
 		
+		
 		mLatLng = (TextView) findViewById(R.id.latlng);
 		
+		// Handler for updating the UI text fields
 		mHandler = new Handler(){
 			public void handleMessage(Message msg){
 				switch (msg.what) {
-				case UPDATE_LATLNG:
-					mLatLng.setText((String) msg.obj);
-					break;
+					case UPDATE_LATLNG:
+						mLatLng.setText((String) msg.obj);
+						break;
 				}
 			}
 		};
@@ -72,6 +80,19 @@ public class MainActivity extends Activity {
 		
 	}
 	
+    // Restores UI states after rotation.
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_FINE, mUseFine);
+        outState.putBoolean(KEY_BOTH, mUseBoth);
+    }
+
+	
+	protected void onResume(){
+		super.onResume();
+		setup();
+	}
 	
 	@Override
 	protected void onStart(){
@@ -90,12 +111,9 @@ public class MainActivity extends Activity {
 		}
 	}
 	
-	protected void onResume(){
-		super.onResume();
-		setup();
-	}
 	
 	@Override
+	// Stop receiving location updates whenever Activity is inactive
 	protected void onStop(){
 		super.onStop();
 		
@@ -109,9 +127,10 @@ public class MainActivity extends Activity {
 		Location networkLocation = null;
 		mLocationManager.removeUpdates(listener);
 		
-		mLatLng.setText(R.string.unknown);
+        mLatLng.setText(R.string.unknown);
 		
-		if (mUseFine) { 
+		
+//		if (mUseFine) { 
 			gpsLocation = requestUpdatesFromProvider(
 					LocationManager.GPS_PROVIDER, R.string.not_support_gps);
 			
@@ -119,7 +138,7 @@ public class MainActivity extends Activity {
 			if (gpsLocation != null){
 				updateUILocation(gpsLocation);
 			}
-		}
+//		}
 	}
 	
 	/**
@@ -163,6 +182,7 @@ public class MainActivity extends Activity {
 				UPDATE_LATLNG,
 				location.getLatitude() + ", " + location.getLongitude()).sendToTarget();
 	}
+	
 	private final LocationListener listener = new LocationListener(){
 		
 		@Override
