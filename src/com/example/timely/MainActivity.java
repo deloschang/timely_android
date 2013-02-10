@@ -1,8 +1,11 @@
 package com.example.timely;
 
+import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,6 +25,7 @@ public class MainActivity extends Activity {
 	
 	private TextView mLatLng;
 	private LocationManager mLocationManager;
+	private Handler mHandler;
 	
 	private boolean mUseFine;
 	private boolean mUseBoth;
@@ -53,6 +57,16 @@ public class MainActivity extends Activity {
 		}
 		
 		mLatLng = (TextView) findViewById(R.id.latlng);
+		
+		mHandler = new Handler(){
+			public void handleMessage(Message msg){
+				switch (msg.what) {
+				case UPDATE_LATLNG:
+					mLatLng.setText((String) msg.obj);
+					break;
+				}
+			}
+		};
 		
 		mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		
@@ -89,7 +103,6 @@ public class MainActivity extends Activity {
 		mLocationManager.removeUpdates(listener);
 	}
 
-	@Override
 	// Set up fine/coarse location providers 
 	private void setup(){
 		Location gpsLocation = null;
@@ -144,11 +157,16 @@ public class MainActivity extends Activity {
 //		
 //	}
 	
+	private void updateUILocation(Location location){
+		// We're sending the update ot a handler updates UI with new location
+		Message.obtain(mHandler,
+				UPDATE_LATLNG,
+				location.getLatitude() + ", " + location.getLongitude()).sendToTarget();
+	}
 	private final LocationListener listener = new LocationListener(){
 		
 		@Override
 		public void onLocationChanged(Location location){
-			
 			updateUILocation(location);
 		}
 		

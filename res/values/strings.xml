@@ -9,6 +9,8 @@
     <string name="button_send">Send</string>
     <string name="unknown">Unknown</string>
     <string name="not_support_gps">GPS Provider not Supported</string>
+    <string name="enable_gps_dialog">GPS provider not enabled. Would you like to enable it?</string>
+    <string name="latlng">Lat/Long:</string>
     <string name="title_activity_display_message">My Message</string>
 
 </resources>
