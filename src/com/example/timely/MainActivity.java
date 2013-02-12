@@ -76,7 +76,10 @@ public class MainActivity extends FragmentActivity {
 			}
 		};
 		
-		mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//		mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		
+		// Starts background location tracking
+		checkLocationServce();
 		
 	}
 	
@@ -139,6 +142,20 @@ public class MainActivity extends FragmentActivity {
 				updateUILocation(gpsLocation);
 			}
 //		}
+	}
+	
+	/**
+	 * Check location service
+	 */
+	private void checkLocationService(){
+		Log.d("CHECK_SERVICE", "Service running: " + (settings.getBoolean("locationService", false)?"YES":"NO"));
+		
+		if (settings.getBoolean("locationService", false)){
+			return;
+		}
+		
+		Intent mServiceIntent = new Intent(this, LocationService.class);
+		startService(mServiceIntent);
 	}
 	
 	/**

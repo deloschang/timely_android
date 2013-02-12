@@ -27,6 +27,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <service 
+            android:enabled="true"
+            android:name=".LocationService" >
+        </service>
+        
+        <receiver 
+            android:enabled="true"
+            android:name=".LocationReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.LOCATION" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
