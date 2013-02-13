@@ -50,6 +50,7 @@ public class MainActivity extends FragmentActivity {
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
@@ -79,7 +80,7 @@ public class MainActivity extends FragmentActivity {
 //		mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		
 		// Starts background location tracking
-		checkLocationServce();
+		checkLocationService();
 		
 	}
 	
