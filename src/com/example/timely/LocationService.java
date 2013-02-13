@@ -3,6 +3,7 @@ package com.example.timely;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -16,9 +17,22 @@ public class LocationService extends Service {
 	private LocationManager lm;
 	private MyLocationListener MyLocationListener;
 	
+    // Shared preferences
+    public static SharedPreferences settings;
+    public static SharedPreferences.Editor configEditor;
+    
 	public void onStartCommand(Intent intent, int startId){
 		super.onStartCommand(intent, startId, startId); // flags parameter?
+		
+		// set locationService preference to true
+		configEditor.putBoolean("locationService", true).commit();
+		
 		addLocationListener();
+	}
+	
+	public void onDestroy(){
+		// set locationService preference to false
+		configEditor.putBoolean("locationService", false).commit();
 	}
 	
 	private void addLocationListener(){

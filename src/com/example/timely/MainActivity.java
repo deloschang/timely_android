@@ -10,6 +10,7 @@ import android.os.Message;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -46,6 +47,7 @@ public class MainActivity extends FragmentActivity {
     
     // debugging purposes
     private static final String TAG = "MyApp";  
+    
 
     
 	@Override
@@ -53,6 +55,7 @@ public class MainActivity extends FragmentActivity {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
 		
 		// We should restore app state (if exists) after rotation
 		if (savedInstanceState != null){
@@ -149,6 +152,7 @@ public class MainActivity extends FragmentActivity {
 	 * Check location service
 	 */
 	private void checkLocationService(){
+//		SharedPreferences settings = context.getSharedPreferences(this);
 		Log.d("CHECK_SERVICE", "Service running: " + (settings.getBoolean("locationService", false)?"YES":"NO"));
 		
 		if (settings.getBoolean("locationService", false)){
@@ -220,4 +224,17 @@ public class MainActivity extends FragmentActivity {
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
 	};
+	
+	// Manages shared preferences
+	void putValue(Context context, String pref, boolean value) {
+	    SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
+	    SharedPreferences.Editor editor = settings.edit();
+	    editor.putBoolean(pref, value);
+	    editor.commit();                
+	}
+
+	boolean getValue(Context context, String value, boolean defaultValue) {
+	    SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
+	    return settings.getBoolean(value, defaultValue);
+	}
 }
